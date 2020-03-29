@@ -18,17 +18,17 @@ public class IndexController {
     @GetMapping("/")//访问首页时
     public String index(HttpServletRequest request) {//请求服务器返回浏览器设置cookie用response，请求cookie用request
         Cookie[] cookies = request.getCookies();
-        //if(cookies!=null)
+        if(cookies!=null){
         for (Cookie cookie : cookies) {//循环所有cookie
             if (cookie.getName().equals("token")) {//getName获取cookie的键，如果name="token"，那么就跟数据库中token名字相同，他的值就是token的value
                 String token = cookie.getValue();//getValue获取对应的（键名为"token"的）值
-                User user = userMapper.findBytoken(token);//拿叫"token"的cookie去数据库里查
+                User user = userMapper.findByToken(token);//拿叫"token"的cookie去数据库里查
                 if (user != null) {
                     request.getSession().setAttribute("user", user);//把user放进session，前端就能判断
                 }
                 break;
             }
-        }
+        }}
         return "index";
     }
 }

@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/newsweb.css">
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
@@ -15,31 +16,12 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">新闻网站</span>
-                <!--                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>-->
             </button>
             <a class="navbar-brand" href="#">新闻网站</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <!--<ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-            </ul>-->
             <form class="navbar-form navbar-left">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="搜索要找的新闻">
@@ -49,7 +31,8 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown" th:if="${session.user != null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><span th:text="${session.user.getName()}"></span><span class="caret"></span></a>
+                       aria-expanded="false"><span th:text="${session.user.getName()}"></span><span
+                            class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">消息中心</a></li>
                         <li><a href="#">个人资料</a></li>
@@ -60,10 +43,47 @@
                 <li th:if="${session.user == null}">
                     <a href="https://github.com/login/oauth/authorize?client_id=386633813bc6c2608398&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登陆</a>
                 </li>
-
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+<div class="container-fluid main ">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
+            <hr>
+            <form action="/publish" method="post">
+
+                <div class="form-group">
+                    <label for="title">新闻标题:</label>
+                    <input type="text" class="form-control" id="title" name="title"
+                           placeholder="新闻标题……"
+                           autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="content">新闻内容:</label>
+                    <textarea class="form-control" id="content" name="content"
+                              cols="30"
+                              rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tag">添加标签:</label>
+                    <input type="text" class="form-control" id="tag" name="tag"
+                           autocomplete="off"
+                           placeholder="输入标签，以，号分隔">
+                </div>
+
+                <button type="submit" class="btn btn-success btn-publish ">发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>新闻发布注意事项</h3>
+            • 新闻标题: 请用精简的语言描述您发布的新闻，不超过25字 <br>
+            • 新闻内容:
+            要具有公开性、真实性、针对性、时效性、准确性、显著性、接近性、开放性、广泛性、变动性。每则新闻在结构上，一般包括标题、导语、主体、背景和结语五部分。前三者是主要部分，后二者是辅助部分。标题一般包括引标题、正标题和副标题；导语是新闻开头的第一段或第一句话，它扼要地揭示新闻的核心内容。主体是新闻的躯干，它用充足的事实来表现主题，是对导语内容的进一步扩展和阐释；背景指的是新闻发生的社会环境和自然环境。背景和结语有时也可以暗含在主体中。阅读新闻，要注意它的六要素（也就是记叙六要素）：人物、时间、地点，事件发生的原因、经过、结果。<br>
+            • 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br>
+        </div>
+    </div>
+</div>
 </body>
 </html>
