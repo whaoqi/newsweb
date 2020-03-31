@@ -7,6 +7,6 @@ public class GithubUser {
     private String name;
     private Long id;
     private String bio;
-    private String avatar_url;
+    private String avatarUrl;//fastjson可把驼峰映射为下划线
     //GithubUser是GithubProvider的返回值
 }
