@@ -10,6 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface NewsMapper {
+
     @Insert("insert into news(title,content,gmt_create,gmt_modified,creator,tag) values (#{title},#{content},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     void create(News news);
 
@@ -18,4 +19,13 @@ public interface NewsMapper {
 
     @Select("select count(*) from news")
     Integer count();
+
+    @Select("select * from news where creator = #{userId} limit #{offset}, #{size}")
+    List<News> listByUserId(@Param(value = "userId") Integer userId, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
+
+    @Select("select count(1) from news where creator = #{userId}")
+    Integer countByUserId(@Param("userId") Integer userId);
+
+    @Select("select * from news where id = #{id}")
+    News getById(@Param("id") Integer id);
 }
