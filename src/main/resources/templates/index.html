@@ -19,9 +19,9 @@
 
             <div class="media" th:each="news : ${pagination.newses}"><!--循环-->
                 <div class="media-left">
-                    <a href="#">
+                    <a th:href="@{'/news/'+ ${news.id}}">
                         <img class="media-object img-rounded"
-                             th:src="${news.user.avatarUrl}">
+                             th:src="${news.user.avatarUrl}" >
                     </a>
                 </div>
                 <div class="media-body">

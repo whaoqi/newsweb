@@ -1,10 +1,7 @@
 package com.next.newsweb.mapper;
 
 import com.next.newsweb.model.News;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -28,4 +25,7 @@ public interface NewsMapper {
 
     @Select("select * from news where id = #{id}")
     News getById(@Param("id") Integer id);
+
+    @Update("update news set title = #{title}, content = #{content}, gmt_modified = #{gmtModified}, tag = #{tag} where id = #{id}")
+    void update(News news);
 }

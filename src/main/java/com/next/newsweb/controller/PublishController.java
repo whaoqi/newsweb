@@ -1,12 +1,15 @@
 package com.next.newsweb.controller;
 
+import com.next.newsweb.dto.NewsDTO;
 import com.next.newsweb.mapper.NewsMapper;
 import com.next.newsweb.model.News;
 import com.next.newsweb.model.User;
+import com.next.newsweb.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -16,7 +19,18 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
 
     @Autowired
-    private NewsMapper newsMapper;
+    private NewsService newsService;
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,
+                       Model model) {
+        NewsDTO news = newsService.getById(id);
+        model.addAttribute("title", news.getTitle());
+        model.addAttribute("content", news.getContent());
+        model.addAttribute("tag", news.getTag());
+        model.addAttribute("id", news.getId());
+        return "publish";
+    }
 
     @GetMapping("/publish")
     public String publish() {
@@ -57,9 +71,8 @@ public class PublishController {
         news.setContent(content);
         news.setTag(tag);
         news.setCreator(user.getId());
-        news.setGmtCreate(System.currentTimeMillis());
-        news.setGmtModified(news.getGmtCreate());
-        newsMapper.create(news);//存入数据库
+        news.setId(id);//可能空
+        newsService.createOrUpdate(news);
         return "redirect:/";
     }
 }

@@ -82,9 +82,9 @@ public class NewsService {
         }
 
         paginationDTO.setPagination(totalPage, page);
-        
+
         Integer offset = size * (page - 1);
-        List<News> newses = newsMapper.listByUserId(userId,offset, size);//查询所有news对象
+        List<News> newses = newsMapper.listByUserId(userId, offset, size);//查询所有news对象
         List<NewsDTO> newsDTOList = new ArrayList<>();
 
         for (News news : newses) {
@@ -106,5 +106,16 @@ public class NewsService {
         User user = userMapper.findById(news.getCreator());
         newsDTO.setUser(user);
         return newsDTO;
+    }
+
+    public void createOrUpdate(News news) {
+        if (news.getId() == null) {
+            news.setGmtCreate(System.currentTimeMillis());
+            news.setGmtModified(news.getGmtCreate());
+            newsMapper.create(news);
+        } else {
+            news.setGmtModified(System.currentTimeMillis());
+            newsMapper.update(news);
+        }
     }
 }

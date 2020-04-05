@@ -2,9 +2,9 @@ package com.next.newsweb.controller;
 
 import com.next.newsweb.dto.AccessTokenDTO;
 import com.next.newsweb.dto.GithubUser;
-import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.User;
 import com.next.newsweb.provider.GithubProvider;
+import com.next.newsweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;//https://www.cnblogs.com/Howinfun/p/11731826.html
+    private UserService userService;
 
     @GetMapping("/callback")//调用callback时拿到code，state调用client code 传回去调用accessToken拿到string
     public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletResponse response) {
@@ -49,14 +50,21 @@ public class AuthorizeController {
             user.setName(githubUser.getName());
             user.setAvatarUrl(githubUser.getAvatarUrl());
             user.setAccountId(String.valueOf(githubUser.getId()));//ID为long类型强转为string
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            userMapper.insert(user);//存储到数据库中
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));//通过response写入cookie，把token放到cookie里面
             return "redirect:/";//重定向请求地址
         } else {
             // 登录失败，重新登录
             return "redirect:/";
         }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 }
