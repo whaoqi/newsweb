@@ -19,13 +19,15 @@
 
             <div class="media" th:each="news : ${pagination.newses}">
                 <div class="media-left">
-                    <a href="#">
+                    <a th:href="@{'/news/'+ ${news.id}}">
                         <img class="media-object img-rounded"
                              th:src="${news.user.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${news.title}"></h4>
+                    <h4 class="media-heading" >
+                        <a th:href="@{'/news/'+ ${news.id}}" th:text="${news.title}"></a>
+                    </h4>
                     <span class="text-desc">
                         <span th:text="${news.viewCount}"></span> 次浏览 •
                         <span th:text="${news.commentCount}"></span> 个评论 •

@@ -2,43 +2,46 @@
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
 <generatorConfiguration>
 
-    <!--    <classPathEntry location="H:\lib\mysql-connector-java-5.1.13-bin.jar" />  -->
     <context id="DB2Tables" targetRuntime="MyBatis3">
 
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
-        <!-- jdbcConnection：指定如何连接到目标数据库 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/newsweb?serverTimezone=UTC"
+                        connectionURL="jdbc:mysql://localhost:3306/newsweb"
                         userId="root"
                         password="123456">
+            <!--MySQL 8.x 需要指定服务器的时区-->
+            <property name="serverTimezone" value="UTC"/>
+            <!--MySQL 不支持 schema 或者 catalog 所以需要添加这个-->
+            <!--参考 : http://www.mybatis.org/generator/usage/mysql.html-->
+            <!--            生成器把其他数据库的同名表生成下来的问题，user表-->
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
+
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
-        <!-- 实体类 bean 带有get和set方法的bean --> 
-        <!-- javaModelGenerator：指定javaBean的生成策略
-        targetPackage="test.model"：目标包名
-        targetProject="\MBGTestProject\src"：目标工程
-        -->
-        <javaModelGenerator targetPackage="com.next.newsweb.model" targetProject="src\main\java">
+
+        <javaModelGenerator targetPackage="com.next.newsweb.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
-        <!-- sql语句相关的xml或者注解的生成包路径 -->  
-        <!-- sqlMapGenerator：sql映射生成策略： -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src\main\resources">
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
-        <!-- 生成的接口所在位置 type="ANNOTATEDMAPPER"生成注解开发代码 type="XMLMAPPER"生成相对应的xml文件-->   
+
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.next.newsweb.mapper"
-                             targetProject="src\main\java">
-            <!-- enableSubPackages:是否让schema作为包的后缀 -->  
+                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
-        <!-- 告诉mbg 需要生成代码的表 -->
+
         <table tableName="user" domainObjectName="User"></table>
-        <table tableName="news" domainObjectName="News"></table>
+        <table tableName="news" domainObjectName="News">
+            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </table>
+        <!--        https://www.jianshu.com/p/492ffd296a74?utm_campaign-->
     </context>
 </generatorConfiguration>

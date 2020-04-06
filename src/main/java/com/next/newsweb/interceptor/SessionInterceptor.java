@@ -2,6 +2,7 @@ package com.next.newsweb.interceptor;
 
 import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.User;
+import com.next.newsweb.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
@@ -25,9 +27,16 @@ public class SessionInterceptor implements HandlerInterceptor {
             for (Cookie cookie : cookies) {//循环所有cookie
                 if (cookie.getName().equals("token")) {//getName获取cookie的键，如果name="token"，那么就跟数据库中token名字相同，他的值就是token的value
                     String token = cookie.getValue();//getValue获取对应的（键名为"token"的）值
-                    User user = userMapper.findByToken(token);//拿叫"token"的cookie去数据库里查
-                    if (user != null) {
-                        request.getSession().setAttribute("user", user);//把user放进session，前端就能判断
+
+                    UserExample userExample = new UserExample();
+                    userExample.createCriteria()
+                            .andTokenEqualTo(token);
+                    List<User> users = userMapper.selectByExample(userExample);
+                    //User user = userMapper.findByToken(token);//拿叫"token"的cookie去数据库里查
+/*                   @Select("select * from user where token = #{token}")
+                    User findByToken(@Param("token") String token);//形参不为类时需要注解@Param*/
+                    if (users.size() != 0) {
+                        request.getSession().setAttribute("user", users.get(0));//把user放进session，前端就能判断
                     }
                     break;
                 }

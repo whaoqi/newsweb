@@ -5,7 +5,9 @@ import com.next.newsweb.dto.PaginationDTO;
 import com.next.newsweb.mapper.NewsMapper;
 import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.News;
+import com.next.newsweb.model.NewsExample;
 import com.next.newsweb.model.User;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,9 @@ public class NewsService {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
 
-        Integer totalCount = newsMapper.count();
+        Integer totalCount = (int) newsMapper.countByExample(new NewsExample());//返回long，强转
+/*        @Select("select count(*) from news")
+        Integer count();*/
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -45,11 +49,14 @@ public class NewsService {
         paginationDTO.setPagination(totalPage, page);
         //size*(page-1)
         Integer offset = size * (page - 1);
-        List<News> newses = newsMapper.list(offset, size);//查询所有news对象
+        List<News> newses = newsMapper.selectByExampleWithRowbounds(new NewsExample(), new RowBounds(offset, size));
+/*      @Select("select * from news limit #{offset}, #{size}")
+        List<News> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);*/
         List<NewsDTO> newsDTOList = new ArrayList<>();
 
         for (News news : newses) {
-            User user = userMapper.findById(news.getCreator());
+            User user = userMapper.selectByPrimaryKey(news.getCreator());
+            /*          @Select("select * from user where id = #{id}")*/
             NewsDTO newsDTO = new NewsDTO();//把news转换为newsDTO,把news和user封装到一个类里
             BeanUtils.copyProperties(news, newsDTO);//spring自带方法完成上述拷贝
             newsDTO.setUser(user);
@@ -65,7 +72,11 @@ public class NewsService {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
 
-        Integer totalCount = newsMapper.countByUserId(userId);
+        NewsExample newsExample = new NewsExample();
+        newsExample.createCriteria()
+                .andCreatorEqualTo(userId);
+        Integer totalCount = (int) newsMapper.countByExample(newsExample);
+        /*      @Select("select count(1) from news where creator = #{userId}")*/
 
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -84,11 +95,15 @@ public class NewsService {
         paginationDTO.setPagination(totalPage, page);
 
         Integer offset = size * (page - 1);
-        List<News> newses = newsMapper.listByUserId(userId, offset, size);//查询所有news对象
+        NewsExample example = new NewsExample();
+        newsExample.createCriteria()
+                .andCreatorEqualTo(userId);
+        List<News> newses = newsMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
+        /*      @Select("select * from news where creator = #{userId} limit #{offset}, #{size}")*/
         List<NewsDTO> newsDTOList = new ArrayList<>();
 
         for (News news : newses) {
-            User user = userMapper.findById(news.getCreator());
+            User user = userMapper.selectByPrimaryKey(news.getCreator());
             NewsDTO newsDTO = new NewsDTO();//把news转换为newsDTO,把news和user封装到一个类里
             BeanUtils.copyProperties(news, newsDTO);//spring自带方法完成上述拷贝,把左复制到右
             newsDTO.setUser(user);
@@ -100,10 +115,11 @@ public class NewsService {
     }
 
     public NewsDTO getById(Integer id) {
-        News news = newsMapper.getById(id);
+        News news = newsMapper.selectByPrimaryKey(id);
+        /*      @Select("select * from news where id = #{id}")*/
         NewsDTO newsDTO = new NewsDTO();
         BeanUtils.copyProperties(news, newsDTO);
-        User user = userMapper.findById(news.getCreator());
+        User user = userMapper.selectByPrimaryKey(news.getCreator());
         newsDTO.setUser(user);
         return newsDTO;
     }
@@ -112,10 +128,19 @@ public class NewsService {
         if (news.getId() == null) {
             news.setGmtCreate(System.currentTimeMillis());
             news.setGmtModified(news.getGmtCreate());
-            newsMapper.create(news);
+            newsMapper.insert(news);
+            /*          @Insert("insert into news(title,content,gmt_create,gmt_modified,creator,tag) values (#{title},#{content},#{gmtCreate},#{gmtModified},#{creator},#{tag})")*/
         } else {
-            news.setGmtModified(System.currentTimeMillis());
-            newsMapper.update(news);
+            News updateNews = new News();
+            updateNews.setGmtModified(System.currentTimeMillis());
+            updateNews.setTitle(news.getTitle());
+            updateNews.setContent(news.getContent());
+            updateNews.setTag(news.getTag());
+            NewsExample example = new NewsExample();
+            example.createCriteria()
+                    .andIdEqualTo(news.getId());
+            newsMapper.updateByExampleSelective(updateNews, example);
+            /*@Update("update news set title = #{title}, content = #{content}, gmt_modified = #{gmtModified}, tag = #{tag} where id = #{id}")*/
         }
     }
 }
