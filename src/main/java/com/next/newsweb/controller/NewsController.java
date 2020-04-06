@@ -18,6 +18,9 @@ public class NewsController {
     public String news(@PathVariable(name = "id") Integer id,
                            Model model) {
         NewsDTO newsDTO = newsService.getById(id);
+
+        //累加阅读数
+        newsService.incView(id);
         model.addAttribute("news", newsDTO);
         return "news";
     }

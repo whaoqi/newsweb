@@ -28,6 +28,11 @@ body{
     font-size: 13px;
 }
 
+.jumbotron {
+    margin: 50px;
+    background-color: #d9edf7;
+}
+
 .footer {
     text-align: center;
     font-size: 12px;

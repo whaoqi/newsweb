@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.next.newsweb.mapper.NewsExtMapper">
+    <resultMap id="BaseResultMap" type="com.next.newsweb.model.News">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="BIGINT" property="gmtModified"/>
+        <result column="creator" jdbcType="INTEGER" property="creator"/>
+        <result column="view_count" jdbcType="INTEGER" property="viewCount"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="tag" jdbcType="VARCHAR" property="tag"/>
+    </resultMap>
+
+    <update id="incView" parameterType="map">
+        update news
+        set
+        view_count = view_count + #{viewCount,jdbcType=INTEGER}
+        where id = #{id}
+    </update>
+    <!--    原子化，防止并发总共只加了一个-->
+</mapper>

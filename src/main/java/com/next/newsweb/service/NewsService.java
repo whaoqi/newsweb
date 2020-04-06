@@ -2,6 +2,9 @@ package com.next.newsweb.service;
 
 import com.next.newsweb.dto.NewsDTO;
 import com.next.newsweb.dto.PaginationDTO;
+import com.next.newsweb.exception.CustomizeErrorCode;
+import com.next.newsweb.exception.CustomizeException;
+import com.next.newsweb.mapper.NewsExtMapper;
 import com.next.newsweb.mapper.NewsMapper;
 import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.News;
@@ -23,6 +26,9 @@ public class NewsService {
 
     @Autowired
     private NewsMapper newsMapper;
+
+    @Autowired
+    private NewsExtMapper newsExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {//分页
 
@@ -116,6 +122,9 @@ public class NewsService {
 
     public NewsDTO getById(Integer id) {
         News news = newsMapper.selectByPrimaryKey(id);
+        if (news == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         /*      @Select("select * from news where id = #{id}")*/
         NewsDTO newsDTO = new NewsDTO();
         BeanUtils.copyProperties(news, newsDTO);
@@ -139,8 +148,18 @@ public class NewsService {
             NewsExample example = new NewsExample();
             example.createCriteria()
                     .andIdEqualTo(news.getId());
-            newsMapper.updateByExampleSelective(updateNews, example);
+            int updated = newsMapper.updateByExampleSelective(updateNews, example);
+            if (updated != 1) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
             /*@Update("update news set title = #{title}, content = #{content}, gmt_modified = #{gmtModified}, tag = #{tag} where id = #{id}")*/
         }
+    }
+
+    public void incView(Integer id) {
+        News news = new News();
+        news.setId(id);
+        news.setViewCount(1);
+        newsExtMapper.incView(news);
     }
 }
