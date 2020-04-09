@@ -15,9 +15,16 @@
     </resultMap>
 
     <update id="incView" parameterType="map">
-        update news
-        set
-        view_count = view_count + #{viewCount,jdbcType=INTEGER}
+    update news
+    set
+    view_count = view_count + #{viewCount,jdbcType=INTEGER}
+    where id = #{id}
+    </update>
+
+    <update id="incCommentCount" parameterType="map">
+    update news
+    set
+    comment_count = comment_count + #{commentCount,jdbcType=INTEGER}
         where id = #{id}
     </update>
     <!--    原子化，防止并发总共只加了一个-->

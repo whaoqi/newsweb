@@ -73,7 +73,7 @@ public class NewsService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {//个人发布展示
+    public PaginationDTO list(Long userId, Integer page, Integer size) {//个人发布展示
 
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
@@ -120,10 +120,10 @@ public class NewsService {
         return paginationDTO;
     }
 
-    public NewsDTO getById(Integer id) {
+    public NewsDTO getById(Long id) {
         News news = newsMapper.selectByPrimaryKey(id);
         if (news == null) {
-            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            throw new CustomizeException(CustomizeErrorCode.NEWS_NOT_FOUND);
         }
         /*      @Select("select * from news where id = #{id}")*/
         NewsDTO newsDTO = new NewsDTO();
@@ -137,6 +137,9 @@ public class NewsService {
         if (news.getId() == null) {
             news.setGmtCreate(System.currentTimeMillis());
             news.setGmtModified(news.getGmtCreate());
+            news.setViewCount(0);
+            news.setLikeCount(0);
+            news.setCommentCount(0);
             newsMapper.insert(news);
             /*          @Insert("insert into news(title,content,gmt_create,gmt_modified,creator,tag) values (#{title},#{content},#{gmtCreate},#{gmtModified},#{creator},#{tag})")*/
         } else {
@@ -150,13 +153,13 @@ public class NewsService {
                     .andIdEqualTo(news.getId());
             int updated = newsMapper.updateByExampleSelective(updateNews, example);
             if (updated != 1) {
-                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+                throw new CustomizeException(CustomizeErrorCode.NEWS_NOT_FOUND);
             }
             /*@Update("update news set title = #{title}, content = #{content}, gmt_modified = #{gmtModified}, tag = #{tag} where id = #{id}")*/
         }
     }
 
-    public void incView(Integer id) {
+    public void incView(Long id) {
         News news = new News();
         news.setId(id);
         news.setViewCount(1);

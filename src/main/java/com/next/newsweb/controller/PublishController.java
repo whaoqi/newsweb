@@ -22,7 +22,7 @@ public class PublishController {
     private NewsService newsService;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name = "id") Integer id,
+    public String edit(@PathVariable(name = "id") Long id,
                        Model model) {
         NewsDTO news = newsService.getById(id);
         model.addAttribute("title", news.getTitle());
@@ -42,7 +42,7 @@ public class PublishController {
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "tag", required = false) String tag,
-            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "id", required = false) Long id,
             HttpServletRequest request, Model model) {
         model.addAttribute("title", title);//接收后放在model里为了验证是否为空、回显
         model.addAttribute("content", content);

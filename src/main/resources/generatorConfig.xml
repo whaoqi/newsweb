@@ -43,5 +43,6 @@
             <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </table>
         <!--        https://www.jianshu.com/p/492ffd296a74?utm_campaign-->
+        <table tableName="comment" domainObjectName="Comment"></table>
     </context>
 </generatorConfiguration>
