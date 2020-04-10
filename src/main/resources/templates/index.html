@@ -26,7 +26,7 @@
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 发现</h2>
             <hr>
 
-            <div class="media" th:each="news : ${pagination.newses}"><!--循环-->
+            <div class="media" th:each="news : ${pagination.data}"><!--循环-->
                 <div class="media-left">
                     <a th:href="@{'/news/'+ ${news.id}}">
                         <img class="media-object img-rounded"

@@ -74,7 +74,7 @@ public class NewsService {
             newsDTOList.add(newsDTO);
         }
 
-        paginationDTO.setNewses(newsDTOList);
+        paginationDTO.setData(newsDTOList);
         return paginationDTO;
     }
 
@@ -121,7 +121,7 @@ public class NewsService {
             newsDTOList.add(newsDTO);
         }
 
-        paginationDTO.setNewses(newsDTOList);
+        paginationDTO.setData(newsDTOList);
         return paginationDTO;
     }
 

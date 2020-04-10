@@ -2,11 +2,12 @@ package com.next.newsweb.service;
 
 import com.next.newsweb.dto.CommentDTO;
 import com.next.newsweb.enums.CommentTypeEnum;
+import com.next.newsweb.enums.NotificationStatusEnum;
+import com.next.newsweb.enums.NotificationTypeEnum;
 import com.next.newsweb.exception.CustomizeErrorCode;
 import com.next.newsweb.exception.CustomizeException;
 import com.next.newsweb.mapper.*;
 import com.next.newsweb.model.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,11 @@ public class CommentService {
     @Autowired
     private CommentExtMapper commentExtMapper;
 
+    @Autowired
+    private NotificationMapper notificationMapper;
+
     @Transactional//事务，添加评论和添加评论数一起成功一起失败
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User commentator) {
         //进行校验 用throw
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -52,6 +56,13 @@ public class CommentService {
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
+
+            // 回复问题
+            News news = newsMapper.selectByPrimaryKey(dbComment.getParentId());
+            if (news == null) {
+                throw new CustomizeException(CustomizeErrorCode.NEWS_NOT_FOUND);
+            }
+
             commentMapper.insert(comment);
 
             // 增加评论数
@@ -60,6 +71,8 @@ public class CommentService {
             parentComment.setCommentCount(1);
             commentExtMapper.incCommentCount(parentComment);
 
+            // 创建通知，方法见下
+            createNotify(comment, dbComment.getCommentator(), commentator.getName(), news.getTitle(), NotificationTypeEnum.REPLY_COMMENT, news.getId());
         } else {
             // 回复问题
             News news = newsMapper.selectByPrimaryKey(comment.getParentId());
@@ -75,7 +88,23 @@ public class CommentService {
             commentExtMapper.incCommentCountZ(parentComment);
 
             newsExtMapper.incCommentCount(news);//问题评论数+1
+
+            // 创建通知
+            createNotify(comment, news.getCreator(), commentator.getName(), news.getTitle(), NotificationTypeEnum.REPLY_NEWS, news.getId());
         }
+    }
+
+    private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(notificationType.getType());
+        notification.setOuterid(outerId);
+        notification.setNotifier(comment.getCommentator());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notification.setReceiver(receiver);
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
+        notificationMapper.insert(notification);
     }
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {

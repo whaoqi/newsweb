@@ -3,6 +3,7 @@ package com.next.newsweb.interceptor;
 import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.User;
 import com.next.newsweb.model.UserExample;
+import com.next.newsweb.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -37,6 +40,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     User findByToken(@Param("token") String token);//形参不为类时需要注解@Param*/
                     if (users.size() != 0) {
                         request.getSession().setAttribute("user", users.get(0));//把user放进session，前端就能判断
+                        Long unreadCount = notificationService.unreadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unreadCount", unreadCount);
                     }
                     break;
                 }

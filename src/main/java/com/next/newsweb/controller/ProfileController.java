@@ -3,6 +3,7 @@ package com.next.newsweb.controller;
 import com.next.newsweb.dto.PaginationDTO;
 import com.next.newsweb.model.User;
 import com.next.newsweb.service.NewsService;
+import com.next.newsweb.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,9 @@ public class ProfileController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(HttpServletRequest request,
                           @PathVariable(name = "action") String action,
@@ -32,12 +36,15 @@ public class ProfileController {
         if ("newses".equals(action)) {
             model.addAttribute("section", "newses");
             model.addAttribute("sectionName", "我的发布");
+            PaginationDTO paginationDTO = newsService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         } else if ("replies".equals(action)) {
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
             model.addAttribute("section", "replies");
+            model.addAttribute("pagination", paginationDTO);
             model.addAttribute("sectionName", "最新回复");
         }
-        PaginationDTO paginationDTO = newsService.list(user.getId(), page, size);
-        model.addAttribute("pagination", paginationDTO);
+
         return "profile";
     }
 }

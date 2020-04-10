@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PaginationDTO {
-    private List<NewsDTO> newses;
+public class PaginationDTO<T> {//因为有回复，有新闻，所以改成T通用类型
+    private List<T> data;
     private boolean showFirstPage;
     private boolean showPrevious;
     private boolean showNext;
