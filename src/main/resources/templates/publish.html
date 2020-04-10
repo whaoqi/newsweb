@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>publish页面</title>
+    <title>发布新闻</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/newsweb.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
-    <script src="/js/newsweb.js" type="application/javascript"></script>
+    <script src="/js/news.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -17,6 +17,7 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
             <hr>
+
             <form action="/publish" method="post">
                 <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
@@ -35,7 +36,31 @@
                     <label for="tag">添加标签:</label>
                     <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag"
                            autocomplete="off"
-                           placeholder="输入标签，以，号分隔">
+                           placeholder="输入标签，以，号分隔"
+                    onclick="showSelectTag()">
+                    <div id="select-tag" class="publish-tag-tab">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" th:each="selectCategory,selectCategoryStat: ${tags}"
+                                th:class="${selectCategoryStat.first ? 'active':''}">
+                                <a th:href="${'#'+selectCategory.categoryName}" aria-controls="home" role="tab"
+                                   data-toggle="tab" th:text="${selectCategory.categoryName}"></a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" th:id="${selectCategory.categoryName}"
+                                 th:each="selectCategory: ${tags}"
+                                 th:class="${selectCategoryStat.first ? 'active tab-pane':'tab-pane'}">
+                                <span>
+                                    <span class="label label-info" th:each="selectTag: ${selectCategory.tags}">
+                                    <span class="glyphicon glyphicon-tags" onclick="selectTag(this)"
+                                          th:data-tag="${selectTag}"
+                                          th:text="${' '+selectTag}">
+                                    </span>
+                                </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="container-fluid main ">
@@ -59,7 +84,7 @@
             <h3>新闻发布注意事项</h3>
             • 新闻标题: 请用精简的语言描述您发布的新闻，不超过25字 <br>
             • 新闻内容:
-            要具有公开性、真实性、针对性、时效性、准确性、显著性、接近性、开放性、广泛性、变动性。每则新闻在结构上，一般包括标题、导语、主体、背景和结语五部分。前三者是主要部分，后二者是辅助部分。标题一般包括引标题、正标题和副标题；导语是新闻开头的第一段或第一句话，它扼要地揭示新闻的核心内容。主体是新闻的躯干，它用充足的事实来表现主题，是对导语内容的进一步扩展和阐释；背景指的是新闻发生的社会环境和自然环境。背景和结语有时也可以暗含在主体中。阅读新闻，要注意它的六要素（也就是记叙六要素）：人物、时间、地点，事件发生的原因、经过、结果。<br>
+            要具有公开性、真实性、针对性、时效性、准确性、显著性、接近性、开放性、广泛性、变动性。每则新闻在结构上，一般包括标题、导语、主体、背景和结语五部分。<br>前三者是主要部分，后二者是辅助部分。标题一般包括引标题、正标题和副标题；导语是新闻开头的第一段或第一句话，它扼要地揭示新闻的核心内容。主体是新闻的躯干，它用充足的事实来表现主题，是对导语内容的进一步扩展和阐释；背景指的是新闻发生的社会环境和自然环境。背景和结语有时也可以暗含在主体中。<br>阅读新闻，要注意它的六要素（也就是记叙六要素）：人物、时间、地点，事件发生的原因、经过、结果。<br>
             • 选择标签: 选择一个或者多个合适的标签，用逗号隔开，每个标签不超过10个字<br>
         </div>
     </div>
