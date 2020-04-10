@@ -10,13 +10,16 @@ import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.News;
 import com.next.newsweb.model.NewsExample;
 import com.next.newsweb.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NewsService {
@@ -55,7 +58,9 @@ public class NewsService {
         paginationDTO.setPagination(totalPage, page);
         //size*(page-1)
         Integer offset = size * (page - 1);
-        List<News> newses = newsMapper.selectByExampleWithRowbounds(new NewsExample(), new RowBounds(offset, size));
+        NewsExample newsExample = new NewsExample();
+        newsExample.setOrderByClause("gmt_create desc");
+        List<News> newses = newsMapper.selectByExampleWithRowbounds(newsExample, new RowBounds(offset, size));
 /*      @Select("select * from news limit #{offset}, #{size}")
         List<News> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);*/
         List<NewsDTO> newsDTOList = new ArrayList<>();
@@ -164,5 +169,24 @@ public class NewsService {
         news.setId(id);
         news.setViewCount(1);
         newsExtMapper.incView(news);
+    }
+
+    public List<NewsDTO> selectRelated(NewsDTO queryDTO) {
+        if (StringUtils.isBlank(queryDTO.getTag())) {
+            return new ArrayList<>();
+        }
+        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        News news = new News();
+        news.setId(queryDTO.getId());
+        news.setTag(regexpTag);
+
+        List<News> newses = newsExtMapper.selectRelated(news);
+        List<NewsDTO> newsDTOS = newses.stream().map(q -> {
+            NewsDTO newsDTO = new NewsDTO();
+            BeanUtils.copyProperties(q, newsDTO);
+            return newsDTO;
+        }).collect(Collectors.toList());
+        return newsDTOS;
     }
 }

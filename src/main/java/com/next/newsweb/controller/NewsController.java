@@ -25,11 +25,13 @@ public class NewsController {
     @GetMapping("/news/{id}")
     public String news(@PathVariable(name = "id") Long id, Model model) {
         NewsDTO newsDTO = newsService.getById(id);
+        List<NewsDTO> relatedNewses = newsService.selectRelated(newsDTO);
         List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.NEWS);
         //累加阅读数
         newsService.incView(id);
         model.addAttribute("news", newsDTO);
         model.addAttribute("comments", comments);
+        model.addAttribute("relatedNewses", relatedNewses);
         return "news";
     }
 }

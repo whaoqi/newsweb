@@ -28,4 +28,8 @@
         where id = #{id}
     </update>
     <!--    原子化，防止并发总共只加了一个-->
+
+    <select id="selectRelated" parameterType="map" resultMap="BaseResultMap">
+        select * from news where id != #{id} and tag regexp #{tag}
+    </select>
 </mapper>
