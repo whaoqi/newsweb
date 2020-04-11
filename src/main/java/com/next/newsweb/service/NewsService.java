@@ -1,6 +1,7 @@
 package com.next.newsweb.service;
 
 import com.next.newsweb.dto.NewsDTO;
+import com.next.newsweb.dto.NewsQueryDTO;
 import com.next.newsweb.dto.PaginationDTO;
 import com.next.newsweb.exception.CustomizeErrorCode;
 import com.next.newsweb.exception.CustomizeException;
@@ -33,14 +34,25 @@ public class NewsService {
     @Autowired
     private NewsExtMapper newsExtMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {//分页
+    public PaginationDTO list(String search, Integer page, Integer size) {
+
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
 
         PaginationDTO paginationDTO = new PaginationDTO();
+
         Integer totalPage;
 
-        Integer totalCount = (int) newsMapper.countByExample(new NewsExample());//返回long，强转
-/*        @Select("select count(*) from news")
+        /*        Integer totalCount = (int) newsMapper.countByExample(new NewsExample());//返回long，强转
+         *//*        @Select("select count(*) from news")
         Integer count();*/
+
+        NewsQueryDTO newsQueryDTO = new NewsQueryDTO();
+        newsQueryDTO.setSearch(search);
+
+        Integer totalCount = newsExtMapper.countBySearch(newsQueryDTO);
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
@@ -56,11 +68,10 @@ public class NewsService {
         }
 
         paginationDTO.setPagination(totalPage, page);
-        //size*(page-1)
-        Integer offset = size * (page - 1);
-        NewsExample newsExample = new NewsExample();
-        newsExample.setOrderByClause("gmt_create desc");
-        List<News> newses = newsMapper.selectByExampleWithRowbounds(newsExample, new RowBounds(offset, size));
+        Integer offset = page < 1 ? 0 : size * (page - 1);
+        newsQueryDTO.setSize(size);
+        newsQueryDTO.setPage(offset);
+        List<News> newses = newsExtMapper.selectBySearch(newsQueryDTO);
 /*      @Select("select * from news limit #{offset}, #{size}")
         List<News> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);*/
         List<NewsDTO> newsDTOList = new ArrayList<>();
@@ -140,6 +151,7 @@ public class NewsService {
 
     public void createOrUpdate(News news) {
         if (news.getId() == null) {
+            // 创建
             news.setGmtCreate(System.currentTimeMillis());
             news.setGmtModified(news.getGmtCreate());
             news.setViewCount(0);
@@ -148,6 +160,7 @@ public class NewsService {
             newsMapper.insert(news);
             /*          @Insert("insert into news(title,content,gmt_create,gmt_modified,creator,tag) values (#{title},#{content},#{gmtCreate},#{gmtModified},#{creator},#{tag})")*/
         } else {
+            // 更新
             News updateNews = new News();
             updateNews.setGmtModified(System.currentTimeMillis());
             updateNews.setTitle(news.getTitle());
