@@ -30,7 +30,16 @@
     <!--    原子化，防止并发总共只加了一个-->
 
     <select id="selectRelated" parameterType="map" resultMap="BaseResultMap">
-        select * from news where id != #{id} and tag regexp #{tag}
+        select * from news
+        <where>
+            <if test="id != null">
+                and id != #{id}
+            </if>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
+            </if>
+        </where>
+        order by gmt_create desc limit 20
     </select>
 
     <select id="countBySearch" parameterType="com.next.newsweb.dto.NewsQueryDTO" resultType="java.lang.Integer">/*resultMap返回map结果集，result返回基本类型*/
@@ -38,6 +47,9 @@
         <where>
             <if test="search != null and search != ''">
                 and title regexp #{search}
+            </if>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
             </if>
         </where>
     </select>
@@ -47,6 +59,9 @@
         <where>
             <if test="search != null and search != ''">
                 and title regexp #{search}
+            </if>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
             </if>
         </where>
         order by gmt_create desc limit #{page},#{size}

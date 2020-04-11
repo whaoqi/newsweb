@@ -34,7 +34,7 @@ public class NewsService {
     @Autowired
     private NewsExtMapper newsExtMapper;
 
-    public PaginationDTO list(String search, Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag, Integer page, Integer size) {
 
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
@@ -51,6 +51,7 @@ public class NewsService {
 
         NewsQueryDTO newsQueryDTO = new NewsQueryDTO();
         newsQueryDTO.setSearch(search);
+        newsQueryDTO.setTag(tag);
 
         Integer totalCount = newsExtMapper.countBySearch(newsQueryDTO);
         if (totalCount % size == 0) {
