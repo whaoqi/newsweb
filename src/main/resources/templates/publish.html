@@ -6,16 +6,18 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/newsweb.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <script src="/js/news.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
 <div class="container-fluid main ">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起</h2>
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发布新闻</h2>
             <hr>
 
             <form action="/publish" method="post">
@@ -26,18 +28,33 @@
                            placeholder="新闻标题……"
                            autocomplete="off">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="news-editor">
                     <label for="content">新闻内容:</label>
                     <textarea class="form-control" th:text="${content}" id="content" name="content"
+                              style="display:none;"
                               cols="30"
                               rows="10"></textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("news-editor", {
+                            width: "100%",
+                            height: 350,
+                            path: "/js/lib/",
+                            pluginPath: "/plugins/",
+                            emoji: true,
+                            delay: 0,
+                            watch: false,
+                            placeholder: "请输入新闻内容"
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
                     <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag"
                            autocomplete="off"
                            placeholder="输入标签，以，号分隔"
-                    onclick="showSelectTag()">
+                           onclick="showSelectTag()">
                     <div id="select-tag" class="publish-tag-tab">
                         <ul class="nav nav-tabs" role="tablist">
                             <li role="presentation" th:each="selectCategory,selectCategoryStat: ${tags}"
