@@ -51,7 +51,9 @@ public class AuthorizeController {
             user.setAvatarUrl(githubUser.getAvatarUrl());
             user.setAccountId(String.valueOf(githubUser.getId()));//ID为long类型强转为string
             userService.createOrUpdate(user);
-            response.addCookie(new Cookie("token", token));//通过response写入cookie，把token放到cookie里面
+            Cookie cookie = new Cookie("token", token);
+            cookie.setMaxAge(60 * 60 * 24 * 30 * 6);
+            response.addCookie(cookie);//通过response写入cookie，把token放到cookie里面
             return "redirect:/";//重定向请求地址
         } else {
             // 登录失败，重新登录

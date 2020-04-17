@@ -23,7 +23,7 @@ public class IndexController {
     @GetMapping("/")//访问首页时
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
-                        @RequestParam(name = "size", defaultValue = "5") Integer size,
+                        @RequestParam(name = "size", defaultValue = "10") Integer size,
                         @RequestParam(name = "search", required = false) String search,
                         @RequestParam(name = "tag", required = false) String tag) {//请求服务器返回浏览器设置cookie用response，请求cookie用request
         PaginationDTO pagination = newsService.list(search, tag, page, size);

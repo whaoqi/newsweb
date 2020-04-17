@@ -53,24 +53,24 @@ public class PublishController {
         model.addAttribute("tag", tag);
         model.addAttribute("tags", TagCache.get());
 
-        if (title == null || title == "") {
+        if (StringUtils.isBlank(title)) {
             model.addAttribute("error", "新闻标题不能为空");
             return "publish";
         }
-        if (content == null || content == "") {
+        if (StringUtils.isBlank(content)) {
             model.addAttribute("error", "新闻内容不能为空");
             return "publish";
         }
-        if (tag == null || tag == "") {
+        if (StringUtils.isBlank(tag)) {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
 
-        String invalid = TagCache.filterInvalid(tag);
+/*        String invalid = TagCache.filterInvalid(tag);
         if (StringUtils.isNotBlank(invalid)) {
             model.addAttribute("error", "输入非法标签:" + invalid);
             return "publish";
-        }
+        }*/
 
         User user = (User) request.getSession().getAttribute("user");//获取session里的user并且强转达到下条的user为空时跳转首页
         if (user == null) {

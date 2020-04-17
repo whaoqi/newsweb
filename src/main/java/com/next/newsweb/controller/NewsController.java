@@ -3,6 +3,8 @@ package com.next.newsweb.controller;
 import com.next.newsweb.dto.CommentDTO;
 import com.next.newsweb.dto.NewsDTO;
 import com.next.newsweb.enums.CommentTypeEnum;
+import com.next.newsweb.exception.CustomizeErrorCode;
+import com.next.newsweb.exception.CustomizeException;
 import com.next.newsweb.service.CommentService;
 import com.next.newsweb.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,18 @@ public class NewsController {
     private CommentService commentService;
 
     @GetMapping("/news/{id}")
-    public String news(@PathVariable(name = "id") Long id, Model model) {
-        NewsDTO newsDTO = newsService.getById(id);
+    public String news(@PathVariable(name = "id") String id, Model model) {
+        Long newsId = null;
+        try {
+            newsId = Long.parseLong(id);
+        } catch (NumberFormatException e) {
+            throw new CustomizeException(CustomizeErrorCode.INVALID_INPUT);
+        }
+        NewsDTO newsDTO = newsService.getById(newsId);
         List<NewsDTO> relatedNewses = newsService.selectRelated(newsDTO);
-        List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.NEWS);
+        List<CommentDTO> comments = commentService.listByTargetId(newsId, CommentTypeEnum.NEWS);
         //累加阅读数
-        newsService.incView(id);
+        newsService.incView(newsId);
         model.addAttribute("news", newsDTO);
         model.addAttribute("comments", comments);
         model.addAttribute("relatedNewses", relatedNewses);

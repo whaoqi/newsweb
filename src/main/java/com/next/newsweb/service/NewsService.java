@@ -38,7 +38,13 @@ public class NewsService {
 
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
-            search = Arrays.stream(tags).collect(Collectors.joining("|"));
+            search = Arrays
+                    .stream(tags)
+                    .filter(StringUtils::isNotBlank)
+                    .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.joining("|"));
+            //+&*引起的搜索异常
         }
 
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -51,7 +57,10 @@ public class NewsService {
 
         NewsQueryDTO newsQueryDTO = new NewsQueryDTO();
         newsQueryDTO.setSearch(search);
-        newsQueryDTO.setTag(tag);
+        if (StringUtils.isNotBlank(tag)) {
+            tag = tag.replace("+", "").replace("*", "").replace("?", "");
+            newsQueryDTO.setTag(tag);
+        }
 
         Integer totalCount = newsExtMapper.countBySearch(newsQueryDTO);
         if (totalCount % size == 0) {
@@ -190,7 +199,12 @@ public class NewsService {
             return new ArrayList<>();
         }
         String[] tags = StringUtils.split(queryDTO.getTag(), ",");
-        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        String regexpTag = Arrays
+                .stream(tags)
+                .filter(StringUtils::isNotBlank)
+                .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.joining("|"));
         News news = new News();
         news.setId(queryDTO.getId());
         news.setTag(regexpTag);
