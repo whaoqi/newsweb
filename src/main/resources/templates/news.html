@@ -152,6 +152,9 @@
                             <span th:text="${news.user.name}"></span>
                         </h5>
                     </div>
+                        <a href="#">
+                            <img th:src="@{'/images/wordcloud/'+${news.gmtCreate}+'.jpg'}"  height="185" width="250"/>
+                        </a>
                 </div>
             </div>
             <!--相关问题-->
