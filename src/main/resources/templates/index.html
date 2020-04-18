@@ -30,17 +30,17 @@
                 <li role="presentation" th:class="${sort == 'new' || sort == ''|| sort == null ? 'active':''}">
                     <a th:href="@{/(sort='new')}">最新新闻</a>
                 </li>
+                <li role="presentation" th:class="${sort == 'hot' ? 'active':''}">
+                    <a th:href="@{/(sort='hot')}">最热门</a>
+                </li>
                 <li role="presentation" th:class="${sort == 'hot30' ? 'active':''}">
                     <a th:href="@{/(sort='hot30')}">30天最热门</a>
                 </li>
                 <li role="presentation" th:class="${sort == 'hot7' ? 'active':''}">
                     <a th:href="@{/(sort='hot7')}">7天最热门</a>
                 </li>
-                <li role="presentation" th:class="${sort == 'hot' ? 'active':''}">
-                    <a th:href="@{/(sort='hot')}">最热门</a>
-                </li>
                 <li role="presentation" th:class="${sort == 'no' ? 'active':''}">
-                    <a th:href="@{/(sort='no')}" class="red">抢沙发！</a>
+                    <a th:href="@{/(sort='no')}">抢沙发</a>
                 </li>
             </ul>
 
@@ -121,12 +121,9 @@
                 </ul>
                 <br>
                 <h4>热门标签</h4>
-                <ul class="question-related">
-                    <li th:each="tag : ${tags}">
-                        <a th:href="@{/(page=1,search=${search},tag=${tag},creator=${creator},sort=${sort})}"
-                           th:text="${tag}"></a>
-                    </li>
-                </ul>
+                <a th:each="tag : ${tags}"
+                   th:href="@{/(page=1,search=${search},tag=${tag},creator=${creator},sort=${sort})}"
+                   th:text="${tag}" class="newsweb-tag index-tag"></a>
             </div>
         </div>
     </div>

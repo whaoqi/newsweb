@@ -7,6 +7,26 @@ body {
     margin: 30px;
 }
 
+.newsweb-tag:hover {
+    background-color: #339dff;
+    color: #fff !important;
+    text-decoration-line: none;
+}
+
+.newsweb-tag {
+    text-decoration-line: none;
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    line-height: 16px;
+    padding: 2px 5px;
+    background-color: #99cfff;
+    font-size: 12px;
+    color: #fff !important;
+    border-radius: 7px;
+    margin: 4px;
+}
+
 .btn-publish {
     float: right;
     margin-bottom: 15px;
@@ -38,6 +58,9 @@ body {
 .news-tag {
     margin-right: 5px;
 }
+.index-tag {
+    margin-right: 150px;
+}
 
 .news-related {
     line-height: 20px;
@@ -55,7 +78,8 @@ body {
 
 .publish-tag-tab .label-info {
     white-space: normal;
-    margin: 5px 5px;
+    font-size: 13px;
+    margin: 8px 8px;
     display: inline-block;
 }
 
