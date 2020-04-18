@@ -35,7 +35,7 @@ public class NewsService {
     @Autowired
     private NewsExtMapper newsExtMapper;
 
-    public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag, Long creator, String sort, Integer page, Integer size) {
 
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
@@ -62,6 +62,9 @@ public class NewsService {
             tag = tag.replace("+", "").replace("*", "").replace("?", "");
             newsQueryDTO.setTag(tag);
         }
+/*        if (creator == 0)
+            creator = null;*/
+        newsQueryDTO.setCreator(creator);
 
         for (SortEnum sortEnum : SortEnum.values()) {
             if (sortEnum.name().toLowerCase().equals(sort)) {

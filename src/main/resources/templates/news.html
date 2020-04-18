@@ -43,7 +43,7 @@
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                 <!--内容-->
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="news-view" >
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="news-view">
                     <textarea style="display:none;" th:text="${news.content}"></textarea>
                 </div>
                 <script type="text/javascript">
@@ -152,9 +152,10 @@
                             <span th:text="${news.user.name}"></span>
                         </h5>
                     </div>
-                        <a href="#">
-                            <img th:src="@{'/images/wordcloud/'+${news.gmtCreate}+'.jpg'}"  height="185" width="250"/>
-                        </a>
+                    <br>
+                    <a href="#">
+                        <img th:src="@{'/images/wordcloud/'+${news.gmtCreate}+'.jpg'}" height="185" width="250"/>
+                    </a>
                 </div>
             </div>
             <!--相关问题-->

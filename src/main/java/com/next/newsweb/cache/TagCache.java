@@ -11,31 +11,31 @@ import java.util.stream.Collectors;
 public class TagCache {
     public static List<TagDTO> get() {
         List<TagDTO> tagDTOS = new ArrayList<>();
-        TagDTO program = new TagDTO();
-        program.setCategoryName("开发语言");
-        program.setTags(Arrays.asList("javascript", "php", "css", "html", "html5", "java", "node.js", "python", "c++", "c", "golang", "objective-c", "typescript", "shell", "swift", "c#", "sass", "ruby", "bash", "less", "asp.net", "lua", "scala", "coffeescript", "actionscript", "rust", "erlang", "perl"));
-        tagDTOS.add(program);
+        TagDTO inland = new TagDTO();
+        inland.setCategoryName("国内新闻");
+        inland.setTags(Arrays.asList("焦点", "本地", "北京", "哈尔滨", "港澳台", "时政要闻", "财经", "A股", "军事", "汽车", "房产", "体育", "司法", "辟谣", "历史", "天气", "彩票", "家居装修", "专题"));
+        tagDTOS.add(inland);
 
-        TagDTO framework = new TagDTO();
-        framework.setCategoryName("平台框架");
-        framework.setTags(Arrays.asList("laravel", "spring", "express", "django", "flask", "yii", "ruby-on-rails", "tornado", "koa", "struts"));
-        tagDTOS.add(framework);
+        TagDTO international = new TagDTO();
+        international.setCategoryName("国际新闻");
+        international.setTags(Arrays.asList("国际热点", "海外资讯", "欧洲", "美洲", "美国", "俄罗斯", "东南亚", "日韩", "中东", "非洲"));
+        tagDTOS.add(international);
 
 
-        TagDTO server = new TagDTO();
-        server.setCategoryName("服务器");
-        server.setTags(Arrays.asList("linux", "nginx", "docker", "apache", "ubuntu", "centos", "缓存 tomcat", "负载均衡", "unix", "hadoop", "windows-server"));
-        tagDTOS.add(server);
+        TagDTO technology = new TagDTO();
+        technology.setCategoryName("科技新闻");
+        technology.setTags(Arrays.asList("手机", "电脑", "最新发布电子产品", "家用电器", "编程", "科技时事", "航天", "互联网", "直播", "导购"));
+        tagDTOS.add(technology);
 
-        TagDTO db = new TagDTO();
-        db.setCategoryName("数据库");
-        db.setTags(Arrays.asList("mysql", "redis", "mongodb", "sql", "oracle", "nosql memcached", "sqlserver", "postgresql", "sqlite"));
-        tagDTOS.add(db);
+        TagDTO entertainment = new TagDTO();
+        entertainment.setCategoryName("娱乐新闻");
+        entertainment.setTags(Arrays.asList("明星", "电影", "电视剧", "小说", "漫画", "动漫", "二次元", "八卦", "sqlite"));
+        tagDTOS.add(entertainment);
 
-        TagDTO tool = new TagDTO();
-        tool.setCategoryName("开发工具");
-        tool.setTags(Arrays.asList("git", "github", "visual-studio-code", "vim", "sublime-text", "xcode intellij-idea", "eclipse", "maven", "ide", "svn", "visual-studio", "atom emacs", "textmate", "hg"));
-        tagDTOS.add(tool);
+        TagDTO focus = new TagDTO();
+        focus.setCategoryName("热点新闻");
+        focus.setTags(Arrays.asList("新冠病毒", "鲍某某案", "辽宁舰", "特朗普", "WHO"));
+        tagDTOS.add(focus);
         return tagDTOS;
     }
 
