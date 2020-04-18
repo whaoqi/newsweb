@@ -23,7 +23,7 @@ public class HotTagTasks {
     @Autowired
     private HotTagCache hotTagCache;
 
-    @Scheduled(fixedRate = 1000*60*60*3)/*1k毫秒*1min*1h*3h更新一次*/
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 3)/*1k毫秒*1min*1h*3h更新一次*/
     public void hotTagSchedule() {
         int offset = 0;
         int limit = 20;

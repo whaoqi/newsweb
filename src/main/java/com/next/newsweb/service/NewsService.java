@@ -3,6 +3,7 @@ package com.next.newsweb.service;
 import com.next.newsweb.dto.NewsDTO;
 import com.next.newsweb.dto.NewsQueryDTO;
 import com.next.newsweb.dto.PaginationDTO;
+import com.next.newsweb.enums.SortEnum;
 import com.next.newsweb.exception.CustomizeErrorCode;
 import com.next.newsweb.exception.CustomizeException;
 import com.next.newsweb.mapper.NewsExtMapper;
@@ -34,7 +35,7 @@ public class NewsService {
     @Autowired
     private NewsExtMapper newsExtMapper;
 
-    public PaginationDTO list(String search, String tag, Integer page, Integer size) {
+    public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
 
         if (StringUtils.isNotBlank(search)) {
             String[] tags = StringUtils.split(search, " ");
@@ -60,6 +61,20 @@ public class NewsService {
         if (StringUtils.isNotBlank(tag)) {
             tag = tag.replace("+", "").replace("*", "").replace("?", "");
             newsQueryDTO.setTag(tag);
+        }
+
+        for (SortEnum sortEnum : SortEnum.values()) {
+            if (sortEnum.name().toLowerCase().equals(sort)) {
+                newsQueryDTO.setSort(sort);
+
+                if (sortEnum == SortEnum.HOT7) {
+                    newsQueryDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 7);
+                }
+                if (sortEnum == SortEnum.HOT30) {
+                    newsQueryDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 30);
+                }
+                break;
+            }
         }
 
         Integer totalCount = newsExtMapper.countBySearch(newsQueryDTO);
