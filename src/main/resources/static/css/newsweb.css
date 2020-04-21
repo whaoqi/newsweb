@@ -1,12 +1,21 @@
-body {
-    background-color: #d9edf7;
+.inleftweb {
+    padding-left: 70px;
 }
 
-.main {
-    background-color: #ffffff;
-    margin: 30px;
+.inrightweb {
+    padding-right: 90px;
 }
 
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+.navbar-default
 .newsweb-tag:hover {
     background-color: #339dff;
     color: #fff !important;
@@ -58,10 +67,18 @@ body {
 .news-tag {
     margin-right: 5px;
 }
+
 .index-tag {
     margin-right: 150px;
 }
 
+.index-content{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
 .news-related {
     line-height: 20px;
     font-size: 12px;
@@ -89,9 +106,9 @@ body {
     margin-bottom: 15px;
 }
 
-.jumbotron {
+.jumbotron-error {
     margin: 50px;
-    background-color: #d9edf7;
+    background-color: white;
 }
 
 .comment {
@@ -158,6 +175,25 @@ body {
     font-size: 12px;
     color: #666;;
     padding: 0 0 15px 0;
+}
+
+/* return top */
+#btnTop {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: #89cff0;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 10px;
+}
+#btnTop:hover {
+    background-color: #1E90FF;
 }
 
 .red {

@@ -27,7 +27,7 @@ public class ProfileController {
                           @PathVariable(name = "action") String action,
                           Model model,
                           @RequestParam(name = "page", defaultValue = "1") Integer page,
-                          @RequestParam(name = "size", defaultValue = "5") Integer size) {
+                          @RequestParam(name = "size", defaultValue = "15") Integer size) {
         User user = (User) request.getSession().getAttribute("user");//获取session里的user并且强转达到下条的user为空时跳转首页
         if (user == null) {
             return "redirect:/";

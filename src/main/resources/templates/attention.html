@@ -4,7 +4,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>新闻网站</title>
+    <title>关注话题-新闻网站</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--viewport为了确保适当的绘制和触屏缩放。user-scalable=no禁用缩放功能后，
@@ -20,101 +20,26 @@
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 </head>
-<script type="application/javascript">
-    window.onload = function () {
-        var closable = window.localStorage.getItem("closable");
-        if (closable == "true") {
-            window.close();
-            window.localStorage.removeItem("closable");//关闭页面，参数移除
-        }
-    }
-</script>
 
 <body>
 <div th:replace="navigation :: nav"></div>
-<div class="jumbotron masthead"
-     style="background-image: url(images/big.jpg); background-repeat: no-repeat; background-attachment: fixed; background-position:center; background-size:100%100%; text-align: center">
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/><a href="/news/542">
-    <h1>
-        <font color="#ffffff">别离与重逢！百年汉口站的76天</font>
-    </h1>
-    <h2>
-        <font color="#ffffff">央视网消息：武汉的百年老站汉口站，一向是全国最繁忙的火车站之一，但在2020年的春节前夕，它却因为疫情按下了“暂停键”。从暂停到重启，从经历无助和别离，到见证重逢与希望，来看2020年百年汉口站的76天。</font>
-    </h2></a>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-</div>
 <div class="container-fluid main">
-
-    <section id="tv">
+    <section id="variety">
         <div class="container">
-            <div class="row swing">
-                <div class="col-md-4">
-                    <a href="/news/545" alt="" target="_blank">
-                        <div class="bigimg">
-                            <img src="images/1.jpg" class="img-responsive " alt="图片1">
-                        </div>
-                        <h3>如何进行年度汇算？首次个税年度汇算你准备好了吗？</h3>
-                        <p>
-                            下列三类人不需要办理年度汇算：一是纳税人需要补税但综合所得年收入不超过12万元的；二是纳税人年度汇算需补税金额不超过400元的；三是纳税人已预缴税额与年度应纳税额一致或不申请年度汇算退税的…… </p>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/news/544" alt="" target="_blank">
-                        <div class="bigimg">
-                            <img src="images/2.jpg" class="img-responsive " alt="图片2">
-                        </div>
-                        <h3>疫情尚未改中国经济稳健发展的格局</h3>
-                        <p>4月17日，中共中央政治局召开会议，强调要坚持稳中求进工作总基调。稳是大局，必须确保疫情不反弹，稳住经济基本盘，兜住民生底线。要在稳的基础上积极进取……
-                        </p>
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="/news/543" alt="" target="_blank">
-                        <div class="bigimg">
-                            <img src="images/3.jpg" class="img-responsive " alt="图片3">
-                        </div>
-                        <h3>喝矿物质水还是纯净水？ 聊一聊喝水的智商税</h3>
-                        <p>水是生命之源，维持我们机体的正常功能，离不开水的参与。纯净水、矿物质水……在商品琳琅满目的今天，对于选择困难症人群来说，喝什么水，就变成了一件复杂的事情。</p>
-                    </a>
-                </div>
+            <br>
+            <h4><span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 关注的标签</h4>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" th:each="tag : ${tags}"
+                        th:href="@{/(page=1,search=${search},tag=${tag},creator=${creator},sort=${sort})}"
+                        th:text="${tag}" class="btn btn-default"></button>
             </div>
         </div>
-    </section>
-
-
-    <section id="variety">
         <div class="container zoomIn">
             <div class="row">
                 <br>
-                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                    <!--<h3><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 发现</h3>-->
-                    <ul class="nav nav-tabs">
-                        <li role="presentation"
-                            th:class="${sort == 'new' || sort == ''|| sort == null ? 'active':''}">
-                            <a th:href="@{/(sort='new')}">最新新闻</a>
-                        </li>
-                        <li role="presentation" th:class="${sort == 'hot' ? 'active':''}">
-                            <a th:href="@{/(sort='hot')}">最热门</a>
-                        </li>
-                        <li role="presentation" th:class="${sort == 'hot30' ? 'active':''}">
-                            <a th:href="@{/(sort='hot30')}">30天最热门</a>
-                        </li>
-                        <li role="presentation" th:class="${sort == 'hot7' ? 'active':''}">
-                            <a th:href="@{/(sort='hot7')}">7天最热门</a>
-                        </li>
-                        <li role="presentation" th:class="${sort == 'no' ? 'active':''}">
-                            <a th:href="@{/(sort='no')}">抢沙发</a>
-                        </li>
-                    </ul>
-
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h3><span class="glyphicon glyphicon-list" aria-hidden="true"></span> 全部关注</h3>
+                    <br>
                     <div class="media" th:each="news : ${pagination.data}">
                         <!--循环-->
                         <div class="media-left">
@@ -126,7 +51,7 @@
                             <h4 class="media-heading">
                                 <a th:href="@{'/news/'+ ${news.id}}" th:text="${news.title}"></a>
                             </h4>
-                            <span class="index-content" th:text="${news.content}"></span> <br>
+                            <!--<span th:text="${news.content}"></span> <br>-->
                             <span class="text-desc">
                                     媒体：<span th:text="${news.user.name}"></span>&nbsp&nbsp-&nbsp&nbsp
                                     <span th:text="${news.viewCount}"></span> 次浏览 •
@@ -170,40 +95,6 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
-                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h3><span class="glyphicon glyphicon-th" aria-hidden="true"></span> 新闻媒体</h3>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li role="presentation"
-                                th:class="${creator == null || creator == ''|| creator == '0' ? 'active':''}">
-                                <a th:href="@{/(creator='')}">全部新闻</a>
-                            </li>
-                            <li role="presentation" th:class="${creator == 1 ? 'active':''}">
-                                <a th:href="@{/(creator=1)}">人民日报</a>
-                            </li>
-                            <li role="presentation" th:class="${creator == 2 ? 'active':''}">
-                                <a th:href="@{/(creator=2)}">网易新闻</a>
-                            </li>
-                            <li role="presentation" th:class="${creator == 3 ? 'active':''}">
-                                <a th:href="@{/(creator=3)}">观察者网</a>
-                            </li>
-                            <li role="presentation" th:class="${creator == 4 ? 'active':''}">
-                                <a th:href="@{/(creator=4)}">凤凰网</a>
-                            </li>
-                            <li role="presentation" th:class="${creator == 5 ? 'active':''}">
-                                <a th:href="@{/(creator=5)}">南京日报</a>
-                            </li>
-                            <li role="presentation" th:class="${creator == 6 ? 'active':''}">
-                                <a th:href="@{/(creator=6)}">黑龙江日报</a>
-                            </li>
-                        </ul>
-                        <br>
-                        <h4>热门标签</h4>
-                        <a th:each="tag : ${tags}"
-                           th:href="@{/(page=1,search=${search},tag=${tag},creator=${creator},sort=${sort})}"
-                           th:text="${tag}" class="newsweb-tag index-tag"></a>
-                    </div>
                 </div>
             </div>
         </div>
