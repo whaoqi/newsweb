@@ -32,7 +32,9 @@
 
 <body>
 <div th:replace="navigation :: nav"></div>
-<div class="jumbotron masthead"
+
+<div th:if="${pagination.page == 1 && search == null && tag== null && creator== null && sort== null}"
+     class="jumbotron masthead"
      style="background-image: url(images/big.jpg); background-repeat: no-repeat; background-attachment: fixed; background-position:center; background-size:100%100%; text-align: center">
     <br/>
     <br/>
@@ -53,7 +55,7 @@
 </div>
 <div class="container-fluid main">
 
-    <section id="tv">
+    <section th:if="${pagination.page == 1 && search == null && tag== null && creator== null && sort== null}" id="tv">
         <div class="container">
             <div class="row swing">
                 <div class="col-md-4">
@@ -201,13 +203,13 @@
                         <br>
                         <form th:if="${session.user != null && tag != null}"
                               th:action="@{'/addtag/'+${tag}}" method="post">
-                            　　<input type="hidden" name="tag" th:value="${tag}"/>                            　　
+                            　　<input type="hidden" name="tag" th:value="${tag}"/> 　　
                             <button type="submit" class="btn btn-sm btn-info">关注该标签</button>
                         </form>
                         <br>
                         <form th:if="${session.user != null && tag != null}"
                               th:action="@{'/deltag/'+${tag}}" method="post">
-                            　　<input type="hidden" name="_method" value="delete"/>                            　　
+                            　　<input type="hidden" name="_method" value="delete"/> 　　
                             <button type="submit" class="btn btn-sm btn-warning">取消关注该标签</button>
                         </form>
                         <br>
@@ -254,7 +256,7 @@
                         </address>
                     </div>
                     <div class="col-md-6  wow fadeInRight">
-                        <form action="#" method="post" role="form">
+                        <form action="mailto:wen93642674@gmail.com" method="post" role="form">
                             <!--当提交表单时，发送表单数据到名为 "#" 的文件-->
                             <!--Bootstrap 表单  向父 <form> 元素添加 role="form"。
                                     把标签和控件放在一个带有 class .form-group 的 <div> 中。这是获取最佳间距所必需的。
