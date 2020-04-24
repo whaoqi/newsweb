@@ -199,6 +199,18 @@
                             </li>
                         </ul>
                         <br>
+                        <form th:if="${session.user != null && tag != null}"
+                              th:action="@{'/addtag/'+${tag}}" method="post">
+                            　　<input type="hidden" name="tag" th:value="${tag}"/>                            　　
+                            <button type="submit" class="btn btn-sm btn-info">关注该标签</button>
+                        </form>
+                        <br>
+                        <form th:if="${session.user != null && tag != null}"
+                              th:action="@{'/deltag/'+${tag}}" method="post">
+                            　　<input type="hidden" name="_method" value="delete"/>                            　　
+                            <button type="submit" class="btn btn-sm btn-warning">取消关注该标签</button>
+                        </form>
+                        <br>
                         <h4>热门标签</h4>
                         <a th:each="tag : ${tags}"
                            th:href="@{/(page=1,search=${search},tag=${tag},creator=${creator},sort=${sort})}"

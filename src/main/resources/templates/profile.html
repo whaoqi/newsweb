@@ -41,13 +41,19 @@
                         <span th:text="${news.likeCount}?:0"></span> 个👍 •
                         <span th:text="${#dates.format(news.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
                             <a th:href="@{'/publish/'+${news.id}}" class="newsweb-menu"
-                               th:if="${session.user != null && session.user.id == news.creator}">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑&nbsp;&nbsp;</span>
-                        </a>
-                            <a th:href="@{'/publish/'+${news.id}}" class="newsweb-menu"
-                               th:if="${session.user != null && session.user.id == news.creator}">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true">删除</span>
-                        </a>
+                               th:if="${session.user != null && session.user.id == news.creator ||session.user.id == 1}">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑&nbsp;&nbsp;</span>
+                            </a>
+                            <!--<form th:action="@{'/delnewsp/'+${news.id}}" method="post">
+                            　　<input type="hidden" name="_method" value="delete"/>
+                            　　<button type="submit" class="btn btn-sm btn-danger">删除</button>
+                            </form>-->
+                            <button th:if="${session.user != null && session.user.id == news.creator ||session.user.id == 1}"
+                                    th:attr="del_uri=@{'/delnewsp/'+${news.id}}" class="btn btn-sm btn-danger deleteBtn">删除
+                            </button>
+                            <form id="deleteNewsForm" method="post">
+                                　　<input type="hidden" name="_method" value="delete"/>
+                            </form>
                     </span>
                     </div>
                 </div>
@@ -114,23 +120,30 @@
 </div>
 <div th:insert="~{footer :: foot}"></div>
 </body>
-<script>// 当网页向下滑动 20px 出现"返回顶部" 按钮
-window.onscroll = function () {
-    scrollFunction()
-};
+<script>
+    // 当网页向下滑动 20px 出现"返回顶部" 按钮
+    window.onscroll = function () {
+        scrollFunction()
+    };
 
-function scrollFunction() {
-    console.log(121);
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        document.getElementById("btnTop").style.display = "block";
-    } else {
-        document.getElementById("btnTop").style.display = "none";
+    function scrollFunction() {
+        console.log(121);
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("btnTop").style.display = "block";
+        } else {
+            document.getElementById("btnTop").style.display = "none";
+        }
     }
-}
 
-// 点击按钮，返回顶部
-function returnTop() {
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-}</script>
+    // 点击按钮，返回顶部
+    function returnTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+    //删除。从form中提取button
+    $(".deleteBtn").click(function () {
+        $("#deleteNewsForm").attr("action", $(this).attr("del_uri")).submit();
+        return false;
+    });
+</script>
 </html>

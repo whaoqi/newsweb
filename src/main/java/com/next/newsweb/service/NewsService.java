@@ -235,4 +235,8 @@ public class NewsService {
         }).collect(Collectors.toList());
         return newsDTOS;
     }
+
+    public void delete(Long id) {
+        newsMapper.deleteByPrimaryKey(id);
+    }
 }
