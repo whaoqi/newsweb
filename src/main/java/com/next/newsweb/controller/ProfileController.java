@@ -35,9 +35,9 @@ public class ProfileController {
         }
 
         if ("newses".equals(action)) {
+            PaginationDTO paginationDTO = newsService.list(user.getId(), page, size);
             model.addAttribute("section", "newses");
             model.addAttribute("sectionName", "我的发布");
-            PaginationDTO paginationDTO = newsService.list(user.getId(), page, size);
             model.addAttribute("pagination", paginationDTO);
         } else if ("replies".equals(action)) {
             PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);

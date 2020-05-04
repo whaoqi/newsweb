@@ -15,4 +15,8 @@ public interface NewsExtMapper {
     Integer countBySearch(NewsQueryDTO newsQueryDTO);
 
     List<News> selectBySearch(NewsQueryDTO newsQueryDTO);
+
+    Integer countByTag(NewsQueryDTO newsQueryDTO);
+
+    List<News> selectByTag(NewsQueryDTO newsQueryDTO);
 }

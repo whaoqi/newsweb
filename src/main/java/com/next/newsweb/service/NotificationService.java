@@ -30,7 +30,7 @@ public class NotificationService {
         PaginationDTO<NotificationDTO> paginationDTO = new PaginationDTO<>();
 
         Integer totalPage;
-
+        totalPage = 0;
         NotificationExample notificationExample = new NotificationExample();
         notificationExample.createCriteria()
                 .andReceiverEqualTo(userId);
@@ -41,13 +41,16 @@ public class NotificationService {
         } else {
             totalPage = totalCount / size + 1;
         }
-
-        if (page < 1) {
-            page = 1;
+        if (totalPage == 0) {
+            totalPage = 1;
         }
         if (page > totalPage) {
             page = totalPage;
         }
+        if (page < 1) {
+            page = 1;
+        }
+
         /*设置分页*/
         paginationDTO.setPagination(totalPage, page);
         /*计算offset*/

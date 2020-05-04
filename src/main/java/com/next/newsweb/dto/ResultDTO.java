@@ -39,4 +39,12 @@ public class ResultDTO<T> {
         resultDTO.setData(t);
         return resultDTO;
     }
+
+    public static <T> ResultDTO info(Integer code, String message) {
+        return errorOf(code, message);
+    }
+
+    public static <T> ResultDTO likeOkOf() {
+        return errorOf(200, "点赞成功");
+    }
 }

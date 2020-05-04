@@ -11,4 +11,5 @@ public class NewsQueryDTO {
     private String tag;
     private Integer page;
     private Integer size;
+    private Long reader;
 }

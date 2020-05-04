@@ -97,4 +97,27 @@
         </if>
         limit #{page},#{size}
     </select>
+
+    <select id="countByTag" parameterType="com.next.newsweb.dto.NewsQueryDTO" resultType="java.lang.Integer">
+        select count(*) from news
+        <where>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByTag" parameterType="com.next.newsweb.dto.NewsQueryDTO" resultMap="BaseResultMap">
+        select * from news
+        <where>
+            <if test="tag != null and tag != ''">
+                and tag regexp #{tag}
+            </if>
+            <if test="tag == null and tag == ''">
+                and (select attentiontag from attentiontag where userid = #{reader}) = news.tag
+            </if>
+        </where>
+            order by gmt_create desc
+        limit #{page},#{size}
+    </select>
 </mapper>

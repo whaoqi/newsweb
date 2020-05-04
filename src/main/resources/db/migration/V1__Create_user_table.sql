@@ -7,6 +7,7 @@ CREATE TABLE `user`
     `token`        char(36)     DEFAULT NULL,
     `gmt_create`   bigint       DEFAULT NULL,
     `gmt_modified` bigint       DEFAULT NULL,
+    `pwd`          varchar(30)  DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

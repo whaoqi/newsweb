@@ -181,23 +181,23 @@
                                 th:class="${creator == null || creator == ''|| creator == '0' ? 'active':''}">
                                 <a th:href="@{/(creator='')}">全部新闻</a>
                             </li>
-                            <li role="presentation" th:class="${creator == 1 ? 'active':''}">
-                                <a th:href="@{/(creator=1)}">人民日报</a>
-                            </li>
                             <li role="presentation" th:class="${creator == 2 ? 'active':''}">
-                                <a th:href="@{/(creator=2)}">网易新闻</a>
+                                <a th:href="@{/(creator=2)}">人民日报</a>
                             </li>
                             <li role="presentation" th:class="${creator == 3 ? 'active':''}">
-                                <a th:href="@{/(creator=3)}">观察者网</a>
+                                <a th:href="@{/(creator=3)}">中国日报</a>
                             </li>
                             <li role="presentation" th:class="${creator == 4 ? 'active':''}">
-                                <a th:href="@{/(creator=4)}">凤凰网</a>
+                                <a th:href="@{/(creator=4)}">广州日报</a>
                             </li>
                             <li role="presentation" th:class="${creator == 5 ? 'active':''}">
-                                <a th:href="@{/(creator=5)}">南京日报</a>
+                                <a th:href="@{/(creator=5)}">光明日报</a>
                             </li>
                             <li role="presentation" th:class="${creator == 6 ? 'active':''}">
-                                <a th:href="@{/(creator=6)}">黑龙江日报</a>
+                                <a th:href="@{/(creator=6)}">南京日报</a>
+                            </li>
+                            <li role="presentation" th:class="${creator == 7 ? 'active':''}">
+                                <a th:href="@{/(creator=7)}">新华日报</a>
                             </li>
                         </ul>
                         <br>
@@ -294,7 +294,6 @@ window.onscroll = function () {
 };
 
 function scrollFunction() {
-    console.log(121);
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
         document.getElementById("btnTop").style.display = "block";
     } else {

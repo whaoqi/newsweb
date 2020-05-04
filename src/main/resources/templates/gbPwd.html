@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>修改密码 - 新闻网站</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--viewport为了确保适当的绘制和触屏缩放。user-scalable=no禁用缩放功能后，
+    用户只能滚动屏幕，就能让你的网站看上去更像原生应用的感觉。-->
+    <link rel="icon" href="images/icon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/newsweb.css">
+    <link rel="stylesheet" href="/css/nweb.css">
+    <link rel="stylesheet" href="/css/loginRegisterForm.css">
+    <script src="/js/modifyPwd.js"></script>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+<div th:replace="navigation :: nav"></div>
+<div class="login-header">
+    <a href="/">修改密码</a>
+</div>
+<div class="modify-pwd-box">
+    <div class="lb-header">
+        <a href="javascript:void(0)" class="active" id="login-box-link">修改密码</a>
+    </div>
+    <form class="email-modify-pwd">
+        <div class="u-form-group">
+            <input type="password" id="pwd" placeholder="密码"/>
+        </div>
+        <div class="u-form-group">
+            <input type="password" id="confirmPwd" placeholder="确认密码"/>
+        </div>
+        <div class="u-form-group">
+            <input type="button" onclick="changePwd()" value="确认修改">
+        </div>
+    </form>
+</div>
+<div th:insert="~{footer :: foot}"></div>
+</body>
+</html>

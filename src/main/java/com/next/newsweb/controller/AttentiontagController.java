@@ -34,11 +34,14 @@ public class AttentiontagController {
         if (user == null) {
             return "redirect:/";
         }
-
         List<Attentiontag> attentiontags = attentiontagService.taglist(user.getId());
-        PaginationDTO pagination = attentiontagService.list(tag, page, size);
+        PaginationDTO pagination = attentiontagService.list(tag, page, size, user.getId());
 
-        model.addAttribute("pagination", pagination);
+        if (tag == null) {
+            PaginationDTO paginationDTO = new PaginationDTO();
+            model.addAttribute("pagination", paginationDTO);
+        } else
+            model.addAttribute("pagination", pagination);
         model.addAttribute("attentiontags", attentiontags);
         model.addAttribute("tag", tag);
         return "attention";

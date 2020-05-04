@@ -41,38 +41,40 @@ public class AttentiontagService {
         return attentiontags;
     }
 
-    public PaginationDTO list(String tag, Integer page, Integer size) {
+    public PaginationDTO list(String tag, Integer page, Integer size, Long reader) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
 
         Integer totalPage;
-
+        totalPage = 0;
         NewsQueryDTO newsQueryDTO = new NewsQueryDTO();
         if (StringUtils.isNotBlank(tag)) {
             tag = tag.replace("+", "").replace("*", "").replace("?", "");
             newsQueryDTO.setTag(tag);
         }
+        newsQueryDTO.setReader(reader);
 
-        Integer totalCount = newsExtMapper.countBySearch(newsQueryDTO);
+        Integer totalCount = newsExtMapper.countByTag(newsQueryDTO);
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
         } else {
             totalPage = totalCount / size + 1;
         }
-
-        if (page < 1) {
-            page = 1;
+        if (totalPage == 0) {
+            totalPage = 1;
         }
-
         if (page > totalPage) {
             page = totalPage;
+        }
+        if (page < 1) {
+            page = 1;
         }
 
         paginationDTO.setPagination(totalPage, page);
         Integer offset = page < 1 ? 0 : size * (page - 1);
         newsQueryDTO.setSize(size);
         newsQueryDTO.setPage(offset);
-        List<News> newses = newsExtMapper.selectBySearch(newsQueryDTO);
+        List<News> newses = newsExtMapper.selectByTag(newsQueryDTO);
 
         List<NewsDTO> newsDTOList = new ArrayList<>();
 

@@ -44,6 +44,13 @@ public class NewsController {
         return "news";
     }
 
+/*    @PostMapping("/like/{id}")
+    public String likeNews(
+            @PathVariable("id") Long id) {
+        newsService.like(id);
+        return "redirect:/";
+    }*/
+
     @PostMapping("/delnews/{id}")
     public String deleteNews(
             @PathVariable("id") Long id) {

@@ -34,7 +34,9 @@ public class AuthorizeController {
     private UserService userService;
 
     @GetMapping("/callback")//调用callback时拿到code，state调用client code 传回去调用accessToken拿到string
-    public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletResponse response) {
+    public String callback(
+            @RequestParam(name = "code") String code,
+            @RequestParam(name = "state") String state, HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
@@ -60,6 +62,7 @@ public class AuthorizeController {
             return "redirect:/";
         }
     }
+
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,
                          HttpServletResponse response) {

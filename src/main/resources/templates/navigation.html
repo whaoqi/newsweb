@@ -1,55 +1,55 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-
-    <div th:fragment="nav">
-        <nav class="navbar navbar-default">
-            <!--导航条 默认导航条-->
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">新闻网站</a>
-                </div>
-                <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"></div>-->
-                <form class="navbar-form navbar-left" role="search" action="/" method="get">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索要找的新闻">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class=" glyphicon glyphicon-search"></span>
-                        搜索</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li th:if="${session.user != null}">
-                        <a href="/attention">我的关注</a>
-                    </li>
-                    <li th:if="${session.user != null}">
-                        <a href="/publish">发布新闻</a>
-                    </li>
-                    <li><a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a>
-                    </li>
-                    <li class="dropdown" th:if="${session.user != null}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                            aria-expanded="false">
-                            <span th:text="${session.user.getName()}"></span>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/profile/newses">个人管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/logout">退出登陆</a></li>
-                        </ul>
-                    </li>
-                    <li th:if="${session.user == null}">
-                        <a
-                            href="https://github.com/login/oauth/authorize?client_id=386633813bc6c2608398&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登陆</a>
-                    </li>
-                    <li><a href="/#about">关于我们</a></li>
-                </ul>
+<div th:fragment="nav">
+    <nav class="navbar navbar-default">
+        <!--导航条 默认导航条-->
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">新闻网站</a>
             </div>
-        </nav>
-    </div>
-
+            <!--<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"></div>-->
+            <form class="navbar-form navbar-left" role="search" action="/" method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search" autocomplete="off" placeholder="搜索要找的新闻">
+                </div>
+                <button type="submit" class="btn btn-default"><span class=" glyphicon glyphicon-search"></span>
+                    搜索
+                </button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li th:if="${session.user != null}">
+                    <a href="/attention">我的关注</a>
+                </li>
+                <li th:if="${session.user != null}">
+                    <a href="/publish">发布新闻</a>
+                </li>
+                <li th:if="${session.user != null}">
+                    <a href="/profile/replies">通知 <span class="badge" th:text="${session.unreadCount}"></span></a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <span th:text="${session.user.getName()}"></span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/profile/newses">个人管理</a></li>
+                        <li><a href="/gbPwd">修改密码</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout">退出登陆</a></li>
+                    </ul>
+                </li>
+                <li th:if="${session.user == null}">
+                    <a href="/login">登录/注册</a>
+                    <!--<a href="https://github.com/login/oauth/authorize?client_id=386633813bc6c2608398&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登陆/注册</a>-->
+                </li>
+                <li><a href="/#about">关于我们</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
 </body>
 
 </html>

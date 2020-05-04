@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>登陆/注册 - 新闻网站</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--viewport为了确保适当的绘制和触屏缩放。user-scalable=no禁用缩放功能后，
+    用户只能滚动屏幕，就能让你的网站看上去更像原生应用的感觉。-->
+    <link rel="icon" href="images/icon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/newsweb.css">
+    <link rel="stylesheet" href="/css/nweb.css">
+    <link rel="stylesheet" href="/css/loginRegisterForm.css">
+    <script src="/js/loginRegisterForm.js" type="text/javascript"></script>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+</head>
+<body>
+<div th:replace="navigation :: nav"></div>
+<div class="login-header">
+    <a href="/">欢迎登陆新闻网站！</a>
+</div>
+<div class="login-all">
+    <div class="login-box">
+        <div class="lb-header">
+            <a href="javascript:void(0)" class="active" id="login-box-link" onclick="loginForm()">登录</a>
+            <a href="javascript:void(0)" id="signup-box-link" onclick="registerForm()">注册</a>
+        </div>
+        <form class="email-login">
+            <div class="u-form-group">
+                <input type="email" id="loginEmail" placeholder="邮箱"/>
+            </div>
+            <div class="u-form-group">
+                <input type="password" id="loginPwd" placeholder="密码"/>
+            </div>
+            <div class="u-form-group">
+                <input type="button" onclick="login()" value="登录"/>
+            </div>
+        </form>
+        <form class="email-signup">
+            <div class="u-form-group">
+                <input type="email" id="email" placeholder="邮箱"/>
+            </div>
+            <div class="u-form-group">
+                <input type="password" id="pwd" placeholder="密码"/>
+            </div>
+            <div class="u-form-group">
+                <input type="button" onclick="register()" value="注册"/>
+            </div>
+
+        </form>
+    </div>
+    <div class="login-github-box">
+        <img src="images/github.svg" alt=""><br>
+        <a href="https://github.com/login/oauth/authorize?client_id=386633813bc6c2608398&redirect_uri=http://localhost:8080/callback&scope=user&state=1">
+            <i class="fa fa-facebook fa-lg"></i>
+            使用GitHub登录 &nbsp;(推荐)
+        </a>
+    </div>
+</div>
+<br><br>
+<div th:insert="~{footer :: foot}"></div>
+</body>
+<script>
+    $(function () {
+        $(".email-signup").hide();
+    })
+</script>
+</html>

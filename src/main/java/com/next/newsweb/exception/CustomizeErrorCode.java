@@ -13,7 +13,14 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     NOTIFICATION_NOT_FOUND(2009, "消息莫非是不翼而飞了？"),
     INVALID_INPUT(2011, "非法输入"),
     INVALID_OPERATION(2012, "是不是走错房间了？"),
-    ;
+
+    EMAIL_IS_EXIST(201, "邮箱已经注册过了！"),
+    EMAIL_ILLEGAL(202, "邮箱不合法！"),
+    EMAIL_OR_PWD_BLANK(203, "邮箱和密码都不能为空！"),
+    INVALID_ADDRESSES(204, "邮箱不正确，无效的地址！"),
+    REGISTER_FAIL(207, "注册失败"),
+    EMAIL_OR_PWD_ERROR(208, "邮箱号或密码错误，登录失败"),
+    EMAIL_IS_BLANK(209, "邮箱不能为空");
 
     @Override
     public String getMessage() {

@@ -6,15 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PaginationDTO<T> {//因为有回复，有新闻，所以改成T通用类型
+public class PaginationDTO<T> {
+    //因为有回复，有新闻，所以改成T通用类型
     private List<T> data;
+    //展示前一页按钮
     private boolean showFirstPage;
+    //展示首页按钮
     private boolean showPrevious;
+    //展示下一页按钮
     private boolean showNext;
+    //展示最后一页按钮
     private boolean showEndPage;
-    private Integer page;//当前页数
-    private List<Integer> pages = new ArrayList<>();
+    //当前页
+    private Integer page;
+    //总页数
     private Integer totalPage;
+    private List<Integer> pages = new ArrayList<>();
 
     public void setPagination(Integer totalPage, Integer page) {
         this.totalPage = totalPage;

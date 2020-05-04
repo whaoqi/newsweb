@@ -51,6 +51,7 @@ public class NewsService {
         PaginationDTO paginationDTO = new PaginationDTO();
 
         Integer totalPage;
+        totalPage = 0;
 
         /*        Integer totalCount = (int) newsMapper.countByExample(new NewsExample());//返回long，强转
          *//*        @Select("select count(*) from news")
@@ -86,13 +87,14 @@ public class NewsService {
         } else {
             totalPage = totalCount / size + 1;
         }
-
-        if (page < 1) {
-            page = 1;
+        if (totalPage == 0) {
+            totalPage = 1;
         }
-
         if (page > totalPage) {
             page = totalPage;
+        }
+        if (page < 1) {
+            page = 1;
         }
 
         paginationDTO.setPagination(totalPage, page);
@@ -121,6 +123,7 @@ public class NewsService {
 
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
+        totalPage = 0;
 
         NewsExample newsExample = new NewsExample();
         newsExample.createCriteria()
@@ -133,20 +136,21 @@ public class NewsService {
         } else {
             totalPage = totalCount / size + 1;
         }
-
-        if (page < 1) {
-            page = 1;
+        if (totalPage == 0) {
+            totalPage = 1;
         }
-
         if (page > totalPage) {
             page = totalPage;
+        }
+        if (page < 1) {
+            page = 1;
         }
 
         paginationDTO.setPagination(totalPage, page);
 
         Integer offset = size * (page - 1);
         NewsExample example = new NewsExample();
-        newsExample.createCriteria()
+        example.createCriteria()
                 .andCreatorEqualTo(userId);
         List<News> newses = newsMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         /*      @Select("select * from news where creator = #{userId} limit #{offset}, #{size}")*/

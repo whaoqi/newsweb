@@ -12,8 +12,19 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+# 配置Mybatis驼峰命名
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.next.newsweb.mapper
   mapper-locations: classpath:mapper/*.xml
+
+## 设置cookie存在时间
+#servlet:
+#  session:
+#    cookie:
+#      max-age: 60*60*24*365
+
+# 自定义变量
+customize:
+  defaultAvatar: /images/default.jpg
