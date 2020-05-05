@@ -6,6 +6,7 @@ import com.next.newsweb.exception.CustomizeErrorCode;
 import com.next.newsweb.mapper.UserMapper;
 import com.next.newsweb.model.User;
 import com.next.newsweb.model.UserExample;
+import com.next.newsweb.provider.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,9 @@ public class RegisterService {
         user.setGmtCreate(System.currentTimeMillis());
         user.setGmtModified(user.getGmtCreate());
         //设置默认头像
-        user.setAvatarUrl(defaultAvatarUrl);
+        //user.setAvatarUrl(defaultAvatarUrl);
+        //设置Gravatar 头像
+        user.setAvatarUrl("https://www.gravatar.com/avatar/" + MD5Util.md5Hex(userDTO.getAccountId()) + ".jpg");
         int flag = userMapper.insert(user);
         //注册成功
         if (flag == 1) {
