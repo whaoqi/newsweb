@@ -25,7 +25,7 @@ public class HotTagCache {
             if (priorityQueue.size() < max) {/*小于直接放入*/
                 priorityQueue.add(hotTagDTO);
             } else {
-                HotTagDTO minHot = priorityQueue.peek();/*最不热门*/
+                HotTagDTO minHot = priorityQueue.peek();/*最不热门 peek：拿到最小元素*/
                 if (hotTagDTO.compareTo(minHot) > 0) {/*当前标签priority大于最小热度标签，就插入*/
                     priorityQueue.poll();/*最小元素拿出*/
                     priorityQueue.add(hotTagDTO);/*当前元素放入*/

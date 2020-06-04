@@ -38,9 +38,9 @@ public class HotTagTasks {
                 for (String tag : tags) {
                     Integer priority = priorities.get(tag);
                     if (priority != null) {
-                        priorities.put(tag, priority + 5 + news.getCommentCount());
+                        priorities.put(tag, priority + (5 + news.getCommentCount()) + (10 + news.getViewCount()));
                     } else {
-                        priorities.put(tag, 5 + news.getCommentCount());
+                        priorities.put(tag, (5 + news.getCommentCount()) + (10 + news.getViewCount()));
                     }
                 }
             }
